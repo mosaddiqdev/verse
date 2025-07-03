@@ -1,0 +1,823 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --text-primary: #2c2c2c;
+    --text-secondary: #5a5a5a;
+    --text-muted: #8a8a8a;
+    --background: #faf9f7;
+    --accent: #1a1a1a;
+
+    --font-serif: 'Crimson Text', 'Crimson Pro', 'Source Serif Pro', 'Charter', Georgia, serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    --space-xs: 0.75rem;
+    --space-sm: 1.25rem;
+    --space-md: 2rem;
+    --space-lg: 3rem;
+    --space-xl: 4.5rem;
+    --space-2xl: 6rem;
+
+    --line-height-tight: 1.1;
+    --line-height-normal: 1.4;
+    --line-height-poetry: 1.7;
+    --line-height-loose: 1.8;
+
+    --measure-poetry: 32rem;
+    --measure-content: 38rem;
+}
+
+html {
+    font-size: 18px;
+    scroll-behavior: smooth;
+    height: 100%;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    html { font-size: 19px; }
+}
+
+@media (min-width: 1024px) {
+    html { font-size: 20px; }
+}
+
+body {
+    font-family: var(--font-serif);
+    line-height: var(--line-height-normal);
+    color: var(--text-primary);
+    background: var(--background);
+    min-height: 100vh;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "onum" 1;
+
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    position: relative;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background: linear-gradient(
+        to bottom,
+        var(--background) 0%,
+        transparent 5%,
+        transparent 95%,
+        var(--background) 100%
+    );
+}
+
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preloader-content {
+    text-align: center;
+}
+
+.preloader-text {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+}
+
+.preloader-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.preloader-dots span {
+    width: 6px;
+    height: 6px;
+    background: var(--text-muted);
+    border-radius: 50%;
+    animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+.preloader-dots span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.preloader-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.preloader-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes pulse-dot {
+    0%, 80%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    40% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+.poem-container {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    min-height: 100vh;
+    padding: var(--space-xl) var(--space-lg);
+    background: var(--background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.poem-container.show {
+    opacity: 1;
+}
+
+.poem-content {
+    max-width: var(--measure-content);
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    background: transparent;
+    position: relative;
+}
+
+.poem-header {
+    margin-bottom: var(--space-2xl);
+    text-align: left;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.poem-title {
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+    font-feature-settings: "kern" 1, "liga" 1;
+}
+
+.poem-author {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: normal;
+    margin-top: var(--space-xs);
+}
+
+.poem-text {
+    margin-bottom: var(--space-2xl);
+    line-height: var(--line-height-poetry);
+    max-width: var(--measure-poetry);
+    text-align: left;
+}
+
+.poem-text p {
+    margin-bottom: 0.6rem;
+    font-size: 1.15rem;
+    color: var(--text-primary);
+    text-align: left;
+    hyphens: none;
+    word-break: normal;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+
+.poem-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Stanza formatting - respecting poetic structure */
+.poem-text .stanza {
+    margin-bottom: var(--space-lg);
+    position: relative;
+}
+
+.poem-text .stanza:last-child {
+    margin-bottom: 0;
+}
+
+/* Individual lines within stanzas */
+.poem-text .stanza p {
+    margin-bottom: 0.3rem;
+    text-indent: 0;
+}
+
+.poem-text .stanza p:last-child {
+    margin-bottom: 0;
+}
+
+/* Preserve line breaks and spacing */
+.poem-text .verse {
+    white-space: pre-line;
+    margin-bottom: var(--space-sm);
+}
+
+/* Footer - like a book's page number */
+.poem-footer {
+    border-top: none;
+    padding-top: var(--space-lg);
+    text-align: left;
+    margin-top: var(--space-2xl);
+}
+
+.poem-mood {
+    font-family: var(--font-serif);
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    text-transform: none;
+    letter-spacing: normal;
+    opacity: 0.7;
+    font-style: italic;
+    margin-bottom: var(--space-sm);
+}
+
+.about-link {
+    margin-top: var(--space-sm);
+}
+
+.about-link a {
+    font-family: var(--font-serif);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-style: italic;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+
+.about-link a:hover {
+    opacity: 0.8;
+}
+
+/* Loading state */
+.loading .poem-title,
+.loading .poem-author,
+.loading .poem-text {
+    opacity: 0.6;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.3; }
+}
+
+/* Loading state - subtle animation */
+.loading .poem-title,
+.loading .poem-author,
+.loading .poem-text {
+    opacity: 0.4;
+    animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes breathe {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.2; }
+}
+
+@media (min-width: 1024px) {
+    .poem-container {
+        padding: var(--space-2xl) var(--space-xl);
+    }
+
+    .poem-content {
+        max-width: 42rem;
+    }
+
+    .poem-title {
+        font-size: 2.25rem;
+        margin-bottom: var(--space-md);
+    }
+
+    .poem-text p {
+        font-size: 1.2rem;
+    }
+
+    .about-container {
+        padding: var(--space-2xl) var(--space-xl);
+    }
+
+    .about-content {
+        max-width: 42rem;
+    }
+
+    .about-header h1 {
+        font-size: 2.25rem;
+    }
+
+    .about-section p {
+        font-size: 1.1rem;
+    }
+}
+
+/* Tablet - comfortable reading */
+@media (max-width: 1023px) and (min-width: 769px) {
+    .poem-container {
+        padding: var(--space-xl) var(--space-lg);
+    }
+
+    .poem-title {
+        font-size: 1.875rem;
+    }
+
+    .poem-text p {
+        font-size: 1.1rem;
+    }
+}
+
+/* Mobile - intimate like a pocket book */
+@media (max-width: 768px) {
+    .poem-container {
+        padding: var(--space-lg) var(--space-md);
+        align-items: flex-start;
+        padding-top: var(--space-xl);
+    }
+
+    .poem-content {
+        max-width: none;
+    }
+
+    .poem-title {
+        font-size: 1.5rem;
+    }
+
+    .poem-text p {
+        font-size: 1rem;
+    }
+
+    .poem-header {
+        margin-bottom: var(--space-xl);
+    }
+
+    /* About page mobile */
+    .about-container {
+        padding: var(--space-lg) var(--space-md);
+        padding-top: var(--space-xl);
+    }
+
+    .about-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .about-section h2 {
+        font-size: 1.125rem;
+    }
+
+    .about-section p {
+        font-size: 1rem;
+        max-width: none;
+    }
+}
+
+/* Small mobile - very intimate */
+@media (max-width: 480px) {
+    .poem-container {
+        padding: var(--space-md) var(--space-sm);
+        padding-top: var(--space-lg);
+    }
+
+    .poem-title {
+        font-size: 1.375rem;
+        line-height: 1.2;
+    }
+
+    .poem-text p {
+        font-size: 0.95rem;
+    }
+
+    .poem-header {
+        margin-bottom: var(--space-lg);
+    }
+
+    .poem-text {
+        margin-bottom: var(--space-xl);
+    }
+
+    .poem-text .stanza {
+        margin-bottom: var(--space-md);
+    }
+}
+
+/* PWA Install Prompt - Small and subtle */
+.install-prompt {
+    position: fixed;
+    bottom: var(--space-md);
+    right: var(--space-md);
+    background: var(--background);
+    border: 1px solid var(--text-muted);
+    border-radius: 6px;
+    padding: var(--space-xs) var(--space-sm);
+    z-index: 10000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    animation: slideUp 0.3s ease;
+    max-width: 200px;
+    opacity: 0.9;
+}
+
+.install-content {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.install-content p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    flex: 1;
+}
+
+.install-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.install-btn, .dismiss-btn {
+    padding: 2px 6px;
+    border: 1px solid var(--text-muted);
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font-serif);
+    font-size: 0.7rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.install-btn:hover, .dismiss-btn:hover {
+    background: var(--text-muted);
+    color: var(--background);
+}
+
+.install-btn {
+    background: var(--text-secondary);
+    color: var(--background);
+}
+
+/* Offline Message */
+.offline-message {
+    position: fixed;
+    top: var(--space-md);
+    left: var(--space-md);
+    right: var(--space-md);
+    background: var(--text-muted);
+    color: var(--background);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: 4px;
+    z-index: 10000;
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: all 0.3s ease;
+}
+
+.offline-message.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.offline-content p {
+    margin: 0;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-primary: #e8e6e3;
+        --text-secondary: #b8b5b2;
+        --text-muted: #8a8784;
+        --background: #1a1918;
+        --accent: #d4d2cf;
+    }
+
+    .daily-info {
+        background: rgba(255,255,255,0.04);
+        border-color: rgba(255,255,255,0.08);
+    }
+
+    .daily-info::before {
+        background: linear-gradient(
+            to right,
+            transparent 0%,
+            var(--text-muted) 20%,
+            var(--text-muted) 80%,
+            transparent 100%
+        );
+    }
+}
+
+/* Print styles - beautiful on paper too */
+@media print {
+    :root {
+        --text-primary: #000;
+        --text-secondary: #333;
+        --text-muted: #666;
+        --background: #fff;
+    }
+
+    .poem-container {
+        min-height: auto;
+        padding: 2rem;
+    }
+
+    .poem-content {
+        max-width: none;
+        padding: 0;
+        box-shadow: none;
+        background: transparent;
+    }
+
+    .poem-header {
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+    }
+
+    .poem-footer {
+        border-top: 1px solid #ccc;
+        margin-top: 2rem;
+        padding-top: 1rem;
+    }
+
+    .poem-text {
+        line-height: 1.6;
+    }
+}
+
+*:focus {
+    outline: none;
+}
+
+a:focus {
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+::selection {
+    background: var(--text-muted);
+    color: var(--background);
+}
+
+::-moz-selection {
+    background: var(--text-muted);
+    color: var(--background);
+}
+
+.about-container {
+    min-height: 100vh;
+    padding: var(--space-xl) var(--space-lg);
+    background: var(--background);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: var(--space-2xl);
+}
+
+.about-content {
+    max-width: var(--measure-content);
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    background: transparent;
+    position: relative;
+}
+
+.about-header {
+    margin-bottom: var(--space-2xl);
+    text-align: left;
+    padding-bottom: 0;
+    border-bottom: none;
+    position: relative;
+}
+
+.about-header h1 {
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+.back-link {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-style: italic;
+    transition: color 0.2s ease;
+    opacity: 0.8;
+}
+
+.back-link:hover {
+    color: var(--text-primary);
+    opacity: 1;
+}
+
+.about-text {
+    margin-bottom: var(--space-2xl);
+}
+
+.about-section {
+    margin-bottom: var(--space-xl);
+}
+
+.about-section:last-child {
+    margin-bottom: 0;
+}
+
+.about-section h2 {
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: var(--line-height-tight);
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+    letter-spacing: -0.005em;
+}
+
+/* Chapter marker */
+
+
+.about-section p {
+    margin-bottom: var(--space-md);
+    font-size: 1.05rem;
+    line-height: var(--line-height-poetry);
+    color: var(--text-primary);
+    max-width: var(--measure-poetry);
+    text-align: left;
+}
+
+.about-section p:last-child {
+    margin-bottom: 0;
+}
+
+/* First paragraph drop cap effect */
+.about-section:first-of-type p:first-of-type::first-letter {
+    font-size: 3.5em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.1em 0.1em 0 0;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.dataset-link {
+    margin-top: var(--space-md);
+}
+
+.dataset-link a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-style: italic;
+    transition: color 0.2s ease;
+}
+
+.dataset-link a:hover {
+    color: var(--text-primary);
+}
+
+.about-footer {
+    border-top: none;
+    padding-top: var(--space-lg);
+    text-align: left;
+    margin-top: var(--space-2xl);
+}
+
+.about-footer p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-xs);
+    font-style: italic;
+}
+
+.about-footer p:last-child {
+    margin-bottom: 0;
+}
+
+.about-footer a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.about-footer a:hover {
+    color: var(--text-secondary);
+}
+
+.daily-info {
+    background: rgba(0,0,0,0.03);
+    padding: var(--space-lg);
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.06);
+    margin: var(--space-xl) 0;
+    position: relative;
+}
+
+.daily-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        var(--text-muted) 20%,
+        var(--text-muted) 80%,
+        transparent 100%
+    );
+    opacity: 0.3;
+}
+
+.daily-info p {
+    margin-bottom: var(--space-sm);
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.daily-info p:last-child {
+    margin-bottom: 0;
+}
+
+.daily-info strong {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Print styles */
+@media print {
+    .poem-container {
+        min-height: auto;
+        padding: 2rem;
+    }
+    
+    .poem-footer {
+        border-top: none;
+        padding-top: var(--space-sm);
+    }
+    
+    .poem-mood {
+        color: var(--text-secondary);
+    }
+}

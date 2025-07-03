@@ -1,0 +1,83 @@
+{
+  "name": "Verse",
+  "short_name": "Verse",
+  "description": "One poem, one day, one moment of stillness",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf9f7",
+  "theme_color": "#1a1918",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["books", "education", "lifestyle"],
+  "icons": [
+    {
+      "src": "src/assets/icon-16.svg",
+      "sizes": "16x16",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "src/assets/icon-32.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "src/assets/icon-48.svg",
+      "sizes": "48x48",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "src/assets/icon-64.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "src/assets/icon-128.svg",
+      "sizes": "128x128",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "src/assets/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "src/assets/icon-256.svg",
+      "sizes": "256x256",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "src/assets/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Today's Poem",
+      "short_name": "Today",
+      "description": "Read today's poem",
+      "url": "/",
+      "icons": [
+        {
+          "src": "src/assets/icon-192.svg",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "About",
+      "short_name": "About",
+      "description": "Learn about Verse",
+      "url": "/about.html",
+      "icons": [
+        {
+          "src": "src/assets/icon-192.svg",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

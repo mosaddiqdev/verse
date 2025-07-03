@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Verse</title>
+    <meta name="description" content="Why Verse exists and how it works. Learn about the philosophy behind this minimal poetry reading experience.">
+    <meta name="keywords" content="poetry, poems, daily poem, literature, reading, minimal, PWA, offline, about">
+    <meta name="author" content="Verse">
+    <meta property="og:title" content="About Verse - Daily Poetry">
+    <meta property="og:description" content="Learn about the philosophy behind this minimal poetry reading experience.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mosaddiqdev.github.io/verse/about.html">
+    <meta property="og:image" content="https://mosaddiqdev.github.io/verse/src/assets/icon-512.svg">
+
+    <meta name="theme-color" content="#1a1918">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Verse">
+    <meta name="msapplication-TileColor" content="#1a1918">
+
+    <link rel="icon" type="image/svg+xml" href="src/assets/icon-32.svg">
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="src/assets/icon-16.svg">
+    <link rel="icon" type="image/svg+xml" sizes="32x32" href="src/assets/icon-32.svg">
+    <link rel="icon" type="image/svg+xml" sizes="48x48" href="src/assets/icon-48.svg">
+    <link rel="apple-touch-icon" sizes="192x192" href="src/assets/icon-192.svg">
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="src/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="8781c53b-aacc-4cc9-9603-bf971f825cc7"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('src/data/poem_index.json');
+                const index = await response.json();
+
+                const today = new Date();
+                const days = Math.floor(today.getTime() / (1000 * 60 * 60 * 24));
+                const tomorrow = days + 1;
+
+                const moods = ['calm_mind', 'warm_heart', 'process_feelings', 'lift_spirits',
+                              'find_motivation', 'remember_reflect', 'think_deeply', 'feel_powerful', 'surprise_me'];
+
+                const moodNames = {
+                    calm_mind: "Calm Mind",
+                    warm_heart: "Warm Heart",
+                    process_feelings: "Process Feelings",
+                    lift_spirits: "Lift Spirits",
+                    find_motivation: "Find Motivation",
+                    remember_reflect: "Remember & Reflect",
+                    think_deeply: "Think Deeply",
+                    feel_powerful: "Feel Powerful",
+                    surprise_me: "Surprise Me"
+                };
+
+                const todayMood = moods[days % moods.length];
+                const todayPoems = index.poems.filter(poem => poem.mood === todayMood);
+                const todayPoem = todayPoems[days % todayPoems.length];
+
+                const tomorrowMood = moods[tomorrow % moods.length];
+
+                const cleanTitle = (title) => {
+                    return title
+                        .replace(/^\d+/, '')
+                        .replace(/^[A-Z][a-z]+Poems/, '')
+                        .replace(/Poem$/, '')
+                        .trim()
+                        .replace(/([a-z])([A-Z])/g, '$1 $2')
+                        .split(' ')
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                        .join(' ');
+                };
+
+                document.getElementById('today-poem').textContent = `"${cleanTitle(todayPoem.title)}"`;
+                document.getElementById('today-mood').textContent = moodNames[todayMood];
+                document.getElementById('tomorrow-mood').textContent = moodNames[tomorrowMood];
+
+            } catch (err) {
+                document.getElementById('today-poem').textContent = 'Today\'s poem';
+                document.getElementById('today-mood').textContent = 'current selection';
+                document.getElementById('tomorrow-mood').textContent = 'tomorrow\'s category';
+            }
+        });
+    </script>
+</head>
+<body>
+    <main class="about-container">
+        <div class="about-content">
+            <header class="about-header">
+                <h1>About Verse</h1>
+                <a href="/" class="back-link">← Back to today's poem</a>
+            </header>
+
+            <div class="about-text">
+                <section class="about-section">
+                    <h2>Why This Exists</h2>
+                    <p>In a world of endless feeds—social media, news, content designed to keep us scrolling forever—everything screams for attention at once.</p>
+
+                    <p>Poetry whispers something different. It asks us to pause. To sit with a single thought, feeling, or image. To let words settle before moving on.</p>
+
+                    <p>Verse exists as a quiet rebellion against the noise. One poem. One day. One moment of stillness in a world that profits from our restlessness.</p>
+                </section>
+
+                <section class="about-section">
+                    <h2>Daily Selection</h2>
+                    <div class="daily-info">
+                        <p><strong>Today:</strong> <span id="today-poem">Loading...</span> from <span id="today-mood">Loading...</span></p>
+                        <p><strong>Tomorrow:</strong> A poem from <span id="tomorrow-mood">Loading...</span></p>
+                    </div>
+                </section>
+
+                <section class="about-section">
+                    <h2>How It Works</h2>
+                    <p>Each morning, the site selects one poem from over 14,000 pieces. The algorithm ensures you'll never encounter the same poem twice—not even if you visit daily for five years.</p>
+
+                    <p>The selection rotates through nine moods: contemplative pieces about memory and time, joyful celebrations, quiet nature observations, verses about love and loss. The algorithm doesn't know what you need today, but poetry has its own way of arriving at the right moment.</p>
+
+                    <p>You can't skip ahead or browse the archive. Today's poem is today's poem. Tomorrow brings discovery.</p>
+                </section>
+
+                <section class="about-section">
+                    <h2>The Collection</h2>
+                    <p>The poems come from a carefully curated dataset created by Michael Arman and shared on Kaggle. This collection spans centuries of poetry, from classical works to contemporary pieces, organized by both form and theme.</p>
+                    
+                    <p>I'm deeply grateful to Michael for making this collection available, and to all the poets whose words live on these pages. Poetry belongs to all of us, but it takes dedicated people to preserve and share it.</p>
+                    
+                    <p class="dataset-link">
+                        <a href="https://www.kaggle.com/datasets/michaelarman/poemsdataset" target="_blank" rel="noopener">
+                            View the original dataset on Kaggle →
+                        </a>
+                    </p>
+                </section>
+
+                <section class="about-section">
+                    <h2>The Philosophy</h2>
+                    <p>Reading one poem a day is a small act of resistance against a world designed to scatter our attention. It says that some things deserve our full presence—that beauty exists for its own sake, not to be optimized or shared.</p>
+
+                    <p>Verse isn't trying to grow or scale or disrupt. It's trying to be a quiet constant. A daily pause. A reminder that stillness has value in a world that rarely stops moving.</p>
+
+                    <p>I hope you find something here worth returning to.</p>
+                </section>
+
+                <section class="about-section">
+                    <h2>Technical Notes</h2>
+                    <p>This site runs entirely in your browser—no tracking, no data collection, no accounts required. The poem selection algorithm is deterministic, meaning everyone around the world sees the same poem on the same day.</p>
+
+                    <p>Built as a Progressive Web App, Verse works offline and can be installed on any device. The design prioritizes reading above all else. No ads, no popups, no newsletter signups. Just poetry, typography, and the space to think.</p>
+
+                    <p>The source code is available on <a href="https://github.com/mosaddiqdev/verse" target="_blank" rel="noopener">GitHub</a> for those interested in the implementation.</p>
+                </section>
+            </div>
+
+            <footer class="about-footer">
+                <p>Built with care</p>
+                <p><a href="/">Return to today's verse</a></p>
+            </footer>
+        </div>
+    </main>
+</body>
+</html>
